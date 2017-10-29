@@ -1,0 +1,16 @@
+#!/bin/sh
+set -e
+package_name=gpaste-applet-hide
+mkdir -p "/usr/share/dpkgdivert/gpaste-applet-hide"
+case "$1" in
+  install)
+    dpkg-divert --package "$package_name" --divert "/usr/share/dpkgdivert/gpaste-applet-hide/usrshareapplicationsorg.gnome.GPaste.Applet.desktop" --rename "/usr/share/applications/org.gnome.GPaste.Applet.desktop"
+    ;;
+  upgrade)
+if [ "$(dpkg-divert --list "/usr/share/applications/org.gnome.GPaste.Applet.desktop")" = "" ]
+then
+    dpkg-divert --package "$package_name" --divert "/usr/share/dpkgdivert/gpaste-applet-hide/usrshareapplicationsorg.gnome.GPaste.Applet.desktop" --rename "/usr/share/applications/org.gnome.GPaste.Applet.desktop"
+fi
+;;
+esac
+exit 0
